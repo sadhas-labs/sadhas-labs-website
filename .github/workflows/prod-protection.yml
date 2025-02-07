@@ -1,0 +1,22 @@
+name: Protect Prod Branch
+
+on:
+  push:
+    branches:
+      - prod
+  pull_request:
+    branches:
+      - prod
+
+jobs:
+  enforce-protection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Author
+        run: |
+          if [[ "${{ github.actor }}" != "thealphacubicle" ]]; then
+            echo "⛔️ ERROR: Only 'thealphacubicle' can push or merge to prod!"
+            exit 1
+          else
+            echo "✅ Authorized push/merge to prod by thealphacubicle."
+          fi
